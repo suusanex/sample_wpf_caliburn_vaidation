@@ -1,0 +1,2 @@
+# sample_wpf_caliburn_vaidation
+Caliburnを使用した場合のValidation（INotifyDataErrorInfo）の実装サンプル。Caliburnは軽量でINotifyDataErrorInfoの実装を容易にする仕組みを持たないため、素のWPFのINotifyDataErrorInfoの実装サンプルに近い。
