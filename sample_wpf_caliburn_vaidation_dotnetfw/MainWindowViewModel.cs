@@ -43,7 +43,8 @@ namespace sample_wpf_caliburn_vaidation_dotnetfw
         }
         private int _number;
 
-        [Compare(nameof(Password1Confirm), ErrorMessage = "Field 'Password1' and 'Password1Confirm' are not same.")]
+        [Compare(nameof(Password1Confirm),
+            ErrorMessageResourceType = typeof(Properties.Resources), ErrorMessageResourceName = "Password1ConfirmErrorMessage")]
         [MinLength(2, ErrorMessage = "Field 'Password1' is too short. 2 or more characters")]
         public string Password1
         {
@@ -60,7 +61,8 @@ namespace sample_wpf_caliburn_vaidation_dotnetfw
         }
         private string _password1;
 
-        [Compare(nameof(Password1), ErrorMessage = "Field 'Password1' and 'Password1Confirm' are not same.")]
+        [Compare(nameof(Password1), 
+            ErrorMessageResourceType = typeof(Properties.Resources), ErrorMessageResourceName = "Password1ConfirmErrorMessage")]
         [MinLength(2, ErrorMessage = "Field 'Password1Confirm' is too short. 2 or more characters")]
         public string Password1Confirm
         {
