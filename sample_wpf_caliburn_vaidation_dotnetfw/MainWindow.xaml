@@ -20,10 +20,21 @@
             <Setter Property="Validation.ErrorTemplate" Value="{StaticResource ErrorTemplate}"></Setter>
             <Setter Property="Margin" Value="0,0,0,20"></Setter>
         </Style>
+        <Style
+            x:Key="PasswordBoxNormalValidation"
+            TargetType="{x:Type PasswordBox}">
+            <Setter Property="Validation.ErrorTemplate" Value="{StaticResource ErrorTemplate}"></Setter>
+            <Setter Property="Margin" Value="0,0,0,20"></Setter>
+        </Style>
     </Window.Resources>
     <DockPanel>
         <TextBox DockPanel.Dock="Top" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextBoxNormalValidation}"></TextBox>
         <TextBox DockPanel.Dock="Top" Text="{Binding Number, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextBoxNormalValidation}"></TextBox>
+        <PasswordBox Name="Password1" DockPanel.Dock="Top" Style="{StaticResource PasswordBoxNormalValidation}" PasswordChanged="Password1_OnPasswordChanged"
+                     Tag="{Binding Password1, ValidatesOnNotifyDataErrors=True}"></PasswordBox>
+        <!--PasswordBoxのパスワードを直接バインドすることはできないため、PasswordChangedでプロパティへ反映する。それだけではValidationの結果を受け取れないため、プロパティをTagへバインドしている。Tagの値自体は使用しない。-->
+        <PasswordBox Name="Password1Confirm" DockPanel.Dock="Top" Style="{StaticResource PasswordBoxNormalValidation}" PasswordChanged="Password1Confirm_OnPasswordChanged"
+                     Tag="{Binding Password1Confirm, ValidatesOnNotifyDataErrors=True}"></PasswordBox>
         <Button DockPanel.Dock="Top" Content="Save" cm:Message.Attach="Save"></Button>
 
     </DockPanel>

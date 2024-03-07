@@ -43,6 +43,39 @@ namespace sample_wpf_caliburn_vaidation_dotnetfw
         }
         private int _number;
 
+        [Compare(nameof(Password1Confirm), ErrorMessage = "Field 'Password1' and 'Password1Confirm' are not same.")]
+        [MinLength(2, ErrorMessage = "Field 'Password1' is too short. 2 or more characters")]
+        public string Password1
+        {
+            get => _password1;
+            set
+            {
+                if (value == _password1) return;
+                _password1 = value;
+                Validate(value);
+                //Compareの依存先に影響するので、依存先の判定も行う
+                Validate(Password1Confirm, nameof(Password1Confirm));
+                NotifyOfPropertyChange();
+            }
+        }
+        private string _password1;
+
+        [Compare(nameof(Password1), ErrorMessage = "Field 'Password1' and 'Password1Confirm' are not same.")]
+        [MinLength(2, ErrorMessage = "Field 'Password1Confirm' is too short. 2 or more characters")]
+        public string Password1Confirm
+        {
+            get => _password1Confirm;
+            set
+            {
+                if (value == _password1Confirm) return;
+                _password1Confirm = value;
+                Validate(value);
+                //Compareの依存先に影響するので、依存先の判定も行う
+                Validate(Password1, nameof(Password1));
+                NotifyOfPropertyChange();
+            }
+        }
+        private string _password1Confirm;
 
         public void Save()
         {
