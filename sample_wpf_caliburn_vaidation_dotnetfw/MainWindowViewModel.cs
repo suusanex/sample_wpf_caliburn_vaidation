@@ -90,6 +90,9 @@ namespace sample_wpf_caliburn_vaidation_dotnetfw
 
         public void Save()
         {
+            AllValidate();
+            if (!CanSave) return;
+
             MessageBox.Show("Save");
         }
 

@@ -50,6 +50,48 @@ namespace sample_wpf_caliburn_vaidation_dotnetfw
 
         }
 
+        /// <summary>
+        /// 全要素のValidationの再判定を行うメソッド。
+        /// 初期値がエラーである項目などは、初期値でエラー検出するとユーザーに不要なエラー通知が出るため初期状態では判定を避けたい。
+        /// しかしその後に変更されなければエラー判定するタイミングがなく、エラーなし扱いになってしまう。
+        /// 入力フォームの確定イベント等でこの判定メソッドを使うことで、そうしたエラーも検出することができる。
+        /// </summary>
+        protected void AllValidate()
+        {
+            var needNotifyProperties = new HashSet<string>(errors.Select(d => d.Key));
+
+            var results = new Collection<ValidationResult>();
+            var context = new ValidationContext(this);
+            if (Validator.TryValidateObject(this, context, results, true))
+            {
+                errors.Clear();
+                foreach (var propertyName in needNotifyProperties)
+                {
+                    ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
+                }
+            }
+            else
+            {
+                var q = from r in results
+                    from m in r.MemberNames
+                    group r by m into g
+                    select g;
+                errors.Clear();
+                foreach (var item in q)
+                {
+                    errors.Add(item.Key, item.Select(d => d.ErrorMessage).ToList());
+                    ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(item.Key));
+                    needNotifyProperties.Remove(item.Key);
+                }
+
+                foreach (var propertyName in needNotifyProperties)
+                {
+                    ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
+                }
+            }
+            
+        }
+
         public IEnumerable GetErrors(string propertyName)
         {
             if (!errors.TryGetValue(propertyName, out var val))
